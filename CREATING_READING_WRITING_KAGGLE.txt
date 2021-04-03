@@ -1,0 +1,38 @@
+import pandas as pd
+
+# A DataFrame is a table.
+# It contains an array of individual entries, each of which has a certain value.
+# Each entry corresponds to a row (or record) and a column
+# This is how we print dataset in pandas
+x = pd.DataFrame({'Joy': ['I am Happy', 'I am excited'], 'Sad': ['I am not Happy', 'I am a sin']})
+print(x)
+
+# index give a name to the index count 0-ONE 1-two
+y = pd.DataFrame({'Bob': ['I liked it', 'Its awful'], 'Sue': ['Its sweet', 'Its tasty']}, index=['one','two'])
+print(y)
+
+# A Series, by contrast, is a sequence of data values.
+# If a DataFrame is a table, a Series is a list. And in fact you can create one with nothing more than a list:
+z = pd.Series([1,2,3,4], index=['zero','one','two','three'], name='ProductA')
+print(z)
+
+# Read a csv file in pandas
+wine_rev = pd.read_csv("WINEMAG.csv", index_col=0)
+
+# HEAD will give first five rows
+print(wine_rev.head())
+
+# no of rows and columns 130,000 rows and 14 columns
+print(wine_rev.shape)
+
+# To save a Dataframe into a CSV
+y.to_csv('csv1.csv')
+
+
+
+
+
+
+
+
+
