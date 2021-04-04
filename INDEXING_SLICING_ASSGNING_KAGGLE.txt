@@ -1,0 +1,63 @@
+import pandas as pd
+
+# READ A CSV FILE USING PANDAS
+wine_xv = pd.read_csv("WINEMAG.csv", index_col=0)
+
+# To pick first 100 rows its loc means 99 included and 2 columns variety and country
+print(wine_xv.loc[:99, ['variety', 'country']])
+
+# conditions under loc
+top_oceania_wines = wine_xv.loc[
+    (wine_xv.country.isin(['Australia', 'New Zealand']))
+    & (wine_xv.points >= 95)
+]
+print(top_oceania_wines)
+
+# The next two line of print will generate the same output
+print(wine_xv['country'])
+print(wine_xv.country)
+#
+# To access the first country out of dict with a key country and list its values
+print(wine_xv['country'][0])
+#
+# iloc i used to get the particular row out of csv.
+# selecting data based on its numerical position in the data. iloc follows this paradigm.
+print(wine_xv.iloc[1])
+#
+# Both loc and iloc are row-first, column-second, : means everything
+print(wine_xv.iloc[:,0])
+#
+# means from starting till 2nd row and columns from 0 to 1, 2 not included
+print(wine_xv.iloc[:3, 0:2])
+print(wine_xv.iloc[1:3, 0])
+print(wine_xv.iloc[[1, 2], 0])
+print(wine_xv.iloc[-5:])
+#
+# To provide the value of country out of 0 row
+print(wine_xv.loc[0, 'country'])
+print(wine_xv.loc[:, ['taster_name', 'taster_twitter_handle', 'points']])
+#
+# In this case df.iloc[0:1000] will return 1000 entries, while df.loc[0:1000] return 1001 of them!
+print(wine_xv.columns)
+#
+# To set the index to a particular column use set_index
+print(wine_xv.set_index("title"))
+#
+# use and or conditions in loc
+print(wine_xv.loc[(wine_xv.country == 'Italy') & (wine_xv.points >= 90)])
+print(wine_xv.loc[(wine_xv.country == 'Italy') | (wine_xv.points >= 90)])
+#
+# use isin condition in loc
+print(wine_xv.loc[wine_xv.country.isin(['Italy', 'France'])])
+#
+# fetch all the rows having notnull values
+print(wine_xv.loc[wine_xv.price.notnull()])
+#
+# Set value of country as Italy
+wine_xv['country'] = 'Italy'
+print(wine_xv)
+#
+# BACKWARD INDEX
+wine_xv['index_backwards'] = range(len(wine_xv), 0, -1)
+print(wine_xv['index_backwards'])
+
