@@ -1,0 +1,62 @@
+import pandas as pd
+
+# READ A CSV FILE USING PANDAS
+wine_xv = pd.read_csv("WINEMAG.csv", index_col=0)
+
+# SUMMARY FUNCTION: describe() This method generates a high-level summary of the attributes of the given column.
+print(wine_xv.describe())
+print(wine_xv.points.describe())
+print(wine_xv.country.describe())
+print(wine_xv.points.mean())
+
+# print(wine_xv.country.unique())
+print(wine_xv.country.value_counts())
+
+# MAP - The function you pass to map() should expect a single value from the Series
+# and return a transformed version of that value
+#  map() returns a new Series where all the values have been transformed by your function
+wine_xv_mean = wine_xv.points.mean()
+print(wine_xv_mean)
+hello = wine_xv.points.map(lambda p: p - wine_xv_mean)
+print(hello)
+
+# wine_xv_mean = wine_xv.points.mean()
+hello = wine_xv.points - wine_xv_mean
+print(hello)
+
+# other operations
+extra_value = wine_xv.country + "-" + "Hello"
+print(extra_value)
+extra_value1 = wine_xv.country + "-" + wine_xv.region_1
+print(extra_value1)
+
+# The function returned a pandas series object containing the index of maximum value in each column. 
+# all NA/null values are excluded.
+bargain_idx = (wine_xv.points / wine_xv.price).idxmax()
+bargain_wine = wine_xv.loc[bargain_idx, 'title']
+
+# count the word fruity and tropical in description
+n_trop = wine_xv.description.map(lambda desc: "tropical" in desc).sum()
+n_fruity = wine_xv.description.map(lambda desc: "fruity" in desc).sum()
+descriptor_counts = pd.Series([n_trop, n_fruity], index=['tropical', 'fruity'])
+print(descriptor_counts)
+#
+# WINE RATINGS - APPLY FUNCTIONS
+# 95 or 95+ = 3 star
+# 85 to 94 = 2 star
+# any other = 1 star
+# canada wine ALWAYS 3 star
+def stars(row):
+    if row.country == 'Canada':
+        return 3
+    elif row.points >= 95:
+        return 3
+    elif row.points >= 85:
+        return 2
+    else:
+        return 1
+
+
+star_ratings = wine_xv.apply(stars, axis='columns')
+print(star_ratings)
+
