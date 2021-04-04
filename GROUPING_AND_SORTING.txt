@@ -1,0 +1,68 @@
+import pandas as pd
+
+# READ A CSV FILE USING PANDAS
+wine_xv = pd.read_csv("WINEMAG.csv", index_col=0)
+
+# ways of doing 2 things get the count of the unique points
+y_cv = wine_xv.points.value_counts()
+print(y_cv)
+#
+x_cv = wine_xv.groupby('points').points.count()
+print(x_cv)
+
+# for every unique point get the minimum price
+print(wine_xv.groupby('points').price.min())
+
+#
+# lambda df: df.title.iloc[0])
+
+# print(wine_xv.groupby('winery').apply(lambda df: df.title.iloc[0]))
+
+# get the winery and title in the output
+hello2 = wine_xv.loc[:, ['winery', 'title']]
+print(hello2)
+
+# get the 10 knots named winery in output
+hello3 = hello2.loc[wine_xv.winery == "10 Knots"]
+print(hello3)
+#
+# get the "1+1=3" named winery in output
+print(wine_xv.winery.loc[wine_xv.winery == "1+1=3"])
+
+# To get the maximum value of points using idxmax function for a group of country and province
+print(wine_xv.groupby(['country', 'province']).apply(lambda df: df.loc[df.points.idxmax()]))
+#
+# To get all the rows only columns country and province
+hello1 = wine_xv.loc[:, ['country', 'province']]
+print(hello1)
+
+# to get the max value min value and len- count based on group by columns
+hello3 = wine_xv.groupby(['country']).price.agg([len, min, max])
+print(hello3)
+
+# to get the len- count based on group by columns
+countries_reviewed = wine_xv.groupby(['country', 'province']).description.agg([len])
+print(countries_reviewed)
+
+# to check the type of index
+mi = countries_reviewed.index
+print(type(mi))
+
+# To RESET Index and get the index
+countries_reviewed.reset_index()
+print(countries_reviewed.index)
+
+# SORTING - SORT BY COUNT AND ASCENDING IS DEFAULT
+print(countries_reviewed.sort_values(by='len'))
+print(countries_reviewed.sort_values(by='len', ascending=False))
+
+countries_reviewed.sort_index()
+countries_reviewed.sort_values(by=['country', 'len'])
+
+# SIZE will get the count of group by columns
+hello09 = wine_xv.groupby(['variety']).price.agg([min, max])
+sorted_varieties = hello09.sort_values(by=[min, max], ascending=False)
+country_variety_counts = wine_xv.groupby(['country', 'variety']).size().sort_values(ascending=False)
+best_rating_per_price = wine_xv.groupby('price')['points'].max().sort_index()
+
+
